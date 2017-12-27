@@ -1,0 +1,47 @@
+<div class =  "main">
+<div class ="container">
+  <br>
+  <h1><%= @post.title %></h1>
+  <p><center><%= @post.created_at.strftime('%b %d, %Y') %></center></p>
+  	<br>
+  <center><%= raw @post.body %></center>
+  <br>
+  <br>
+    <strong><center>Comments</center></strong>
+    <br>
+  <% @post.comments.each do |comment| %>
+     <p>
+      <strong>User:</strong>
+      <%= comment.commenter %>
+    </p>
+    <p>
+      <%= comment.body %><br>
+    </p>
+    <% if user_signed_in? %>  
+    <%= link_to 'Delete Comment',post_comment_path(@post, comment),method: :delete,data: { confirm: 'Are you sure?' } %>
+  <% end %>
+  <% end %>
+<br
+><br>
+  <% if user_signed_in? %>  
+    <strong><center>Add Comment</center></strong>
+  <%= form_for([@post, @post.comments.build]) do |f| %>
+      <p><center>
+      <%= f.label :commenter %>:
+      <%= f.text_field :commenter %>
+    </center></p>
+    <p><center>
+      <%= f.text_area :body %>
+    </p></center>
+    <p><center>
+      <%= f.submit "Create Comment", :id => "save-button" %>
+    </p></center>
+  <% end %>
+  <% else %>
+    <center><%= link_to 'Login/Register to add new comments', new_user_session_path%>s
+    </center>
+  <% end %>
+  <br>
+  <center><%= link_to "Back to main page", posts_path%></center>
+</div>
+</div>
